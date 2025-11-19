@@ -20,6 +20,8 @@ if 'chat_history' not in st.session_state:
     st.session_state.chat_history = []
 if 'files_loaded' not in st.session_state:
     st.session_state.files_loaded = False
+if 'api_key' not in st.session_state:
+    st.session_state.api_key = ""
 
 def create_document_store(api_key, uploaded_files):
     """Create a document store from uploaded files"""
@@ -139,14 +141,16 @@ with st.sidebar:
     # API Key input
     api_key = st.text_input(
         "Google Gemini API Key",
+        value=st.session_state.api_key,
         type="password",
         help="Get your API key from https://aistudio.google.com/"
     )
 
-    if api_key:
+    if api_key and api_key != st.session_state.api_key:
         st.session_state.api_key = api_key
         st.success("✅ API Key configured")
-    else:
+        st.rerun()
+    elif not st.session_state.api_key:
         st.warning("⚠️ Please enter your API key")
 
     st.divider()
@@ -248,7 +252,7 @@ if st.session_state.files_loaded and st.session_state.api_key:
             st.error("❌ Could not load documents for chat")
 
 else:
-    if not st.session_state.api_key:
+    if not st.session_state.api_key or st.session_state.api_key == "":
         st.info("👆 Please enter your API key in the sidebar to get started.")
     elif not st.session_state.files_loaded:
         st.info("📄 Upload documents or load an existing store from the sidebar to start chatting.")
