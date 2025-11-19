@@ -6,8 +6,9 @@ A Python-based chatbot that uses Google Gemini AI to answer questions about rese
 
 - 📄 **PDF Upload & Indexing**: Automatically upload and index PDF research papers
 - 🤖 **AI-Powered Q&A**: Interactive chatbot using Google Gemini Pro
-- 📚 **Automatic Citations**: Answers include source references from your documents
-- 💬 **Conversation History**: Maintains context across multiple questions
+- � **Conversation History**: Maintains context across multiple questions
+- 🎨 **Web Interface**: Modern Streamlit-based UI for easy interaction
+- �📚 **Automatic Citations**: Answers include source references from your documents
 - 🔄 **Easy Model Switching**: Switch between different Gemini models
 - 🛡️ **Rate Limiting**: Built-in handling for API rate limits
 - 🌐 **Cross-Platform**: Works on Windows, Mac, and Linux
@@ -43,7 +44,36 @@ A Python-based chatbot that uses Google Gemini AI to answer questions about rese
 
 ## Usage
 
-### Step 1: Prepare Your Documents
+### Option 1: Web Interface (Recommended)
+
+The easiest way to use the chatbot is through the modern web interface:
+
+1. **Run the Streamlit app:**
+   ```bash
+   streamlit run app.py
+   ```
+
+2. **Open your browser** to the URL shown (usually http://localhost:8501)
+
+3. **Configure your API key** in the sidebar
+
+4. **Upload PDF files** or load an existing document store
+
+5. **Start chatting!** Ask questions in the chat interface
+
+**Web UI Features:**
+- 🎨 Modern, intuitive interface
+- 📤 Drag & drop PDF upload
+- 💬 Real-time chat with conversation history
+- 📊 Document store management
+- 📚 Automatic citation display
+- 🔄 Easy switching between document collections
+
+### Option 2: Command Line Interface
+
+For advanced users or automation:
+
+#### Step 1: Prepare Your Documents
 
 1. Create a `papers/` folder in the project directory
 2. Place all your PDF research papers in the `papers/` folder
@@ -136,8 +166,9 @@ MODEL_NAME = "gemini-pro"  # Current default
 
 ```
 gemini-research-chatbot/
-├── create_store.py          # Store creation script
-├── chatbot.py              # Interactive chatbot
+├── app.py                  # Streamlit web interface (recommended)
+├── create_store.py         # Store creation script (CLI)
+├── chatbot.py              # Interactive chatbot (CLI)
 ├── requirements.txt        # Python dependencies
 ├── .gitignore             # Git ignore rules
 ├── README.md              # This file
