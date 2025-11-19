@@ -100,8 +100,8 @@ def load_document_store(store_id):
 def chat_with_documents(question, files, history):
     """Chat with documents using Gemini"""
     try:
-        # Try different model names
-        model_names = ["gemini-1.5-flash"]
+        # Try different model names (prioritizing free models)
+        model_names = ["gemini-2.5-flash", "gemini-2.0-flash-001", "gemini-flash-latest", "gemini-2.0-flash"]
         model = None
         
         for model_name in model_names:
