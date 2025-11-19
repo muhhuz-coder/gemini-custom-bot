@@ -86,8 +86,8 @@ def run_chatbot():
 
         print(f"✓ Loaded {len(files)} document(s)")
 
-        # Create the model with fallback
-        model_names = ["gemini-1.0-pro", "gemini-pro", "gemini-1.5-pro"]
+        # Create the model with fallback (prioritizing free models)
+        model_names = ["gemini-2.5-flash", "gemini-2.0-flash-001", "gemini-flash-latest", "gemini-2.0-flash"]
         model = None
         
         for model_name in model_names:
