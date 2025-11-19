@@ -13,6 +13,9 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
+# Configuration
+API_KEY = "AIzaSyC68Y9pohX1X88ejs2jt_K0522tFSRUXms"  # Your Google Gemini API key
+
 # Initialize session state
 if 'store_id' not in st.session_state:
     st.session_state.store_id = None
@@ -21,7 +24,7 @@ if 'chat_history' not in st.session_state:
 if 'files_loaded' not in st.session_state:
     st.session_state.files_loaded = False
 if 'api_key' not in st.session_state:
-    st.session_state.api_key = ""
+    st.session_state.api_key = API_KEY
 
 def create_document_store(api_key, uploaded_files):
     """Create a document store from uploaded files"""
@@ -97,7 +100,27 @@ def load_document_store(store_id):
 def chat_with_documents(question, files, history):
     """Chat with documents using Gemini"""
     try:
-        model = genai.GenerativeModel("gemini-pro")
+        # Try different model names
+        model_names = ["gemini-1.0-pro", "gemini-pro", "gemini-1.5-flash"]
+        model = None
+        
+        for model_name in model_names:
+            try:
+                model = genai.GenerativeModel(model_name)
+                # Test if model works by trying to get model info
+                _ = model.model_name
+                break
+            except Exception:
+                continue
+        
+        if model is None:
+            # List available models
+            try:
+                available_models = genai.list_models()
+                available_names = [m.name for m in available_models if 'generateContent' in m.supported_generation_methods]
+                return f"Error: No suitable model found. Available models: {', '.join(available_names)}"
+            except Exception as list_error:
+                return f"Error: No suitable model found. List models error: {str(list_error)}"
 
         # Build context from history
         system_prompt = "You are a helpful Q&A assistant for research papers. Answer questions based on the provided documents. Include citations to specific sources when possible."
@@ -137,21 +160,7 @@ st.markdown("Upload your research papers and ask questions about them!")
 # Sidebar for configuration
 with st.sidebar:
     st.header("⚙️ Configuration")
-
-    # API Key input
-    api_key = st.text_input(
-        "Google Gemini API Key",
-        value=st.session_state.api_key,
-        type="password",
-        help="Get your API key from https://aistudio.google.com/"
-    )
-
-    if api_key != st.session_state.api_key:
-        st.session_state.api_key = api_key
-        if api_key:
-            st.success("✅ API Key configured")
-        else:
-            st.warning("⚠️ Please enter your API key")
+    st.success("✅ API Key configured")
 
     st.divider()
 
@@ -173,10 +182,10 @@ with st.sidebar:
             help="Select one or more PDF research papers"
         )
 
-        if uploaded_files and api_key:
+        if uploaded_files:
             if st.button("🚀 Create Document Store", type="primary"):
                 with st.spinner("Creating document store..."):
-                    store_id, num_files = create_document_store(api_key, uploaded_files)
+                    store_id, num_files = create_document_store(st.session_state.api_key, uploaded_files)
 
                 if store_id:
                     st.session_state.store_id = store_id
@@ -191,7 +200,7 @@ with st.sidebar:
             help="Enter the Store ID from a previously created document store"
         )
 
-        if store_id_input and api_key:
+        if store_id_input:
             if st.button("📂 Load Document Store"):
                 with st.spinner("Loading document store..."):
                     files = load_document_store(store_id_input)
@@ -213,7 +222,7 @@ with st.sidebar:
         st.rerun()
 
 # Main chat interface
-if st.session_state.files_loaded and st.session_state.api_key:
+if st.session_state.files_loaded:
     st.header("💬 Chat with Your Documents")
 
     # Display chat history
@@ -252,9 +261,7 @@ if st.session_state.files_loaded and st.session_state.api_key:
             st.error("❌ Could not load documents for chat")
 
 else:
-    if not st.session_state.api_key or st.session_state.api_key == "":
-        st.info("👆 Please enter your API key in the sidebar to get started.")
-    elif not st.session_state.files_loaded:
+    if not st.session_state.files_loaded:
         st.info("📄 Upload documents or load an existing store from the sidebar to start chatting.")
 
 # Footer

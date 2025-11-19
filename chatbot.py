@@ -26,7 +26,7 @@ API_KEY = "AIzaSyC68Y9pohX1X88ejs2jt_K0522tFSRUXms"  # Replace with your actual 
 STORE_ID = "f9abee98-c29b-4cc2-bf22-aa008d32271d"  # Replace with the Store ID from create_store.py output
 
 # Model settings (Gemini 1.5 Flash for speed/cost, easily switchable to Pro)
-MODEL_NAME = "gemini-2.5-flash"  # Change to "gemini-1.5-pro" for higher quality if needed
+MODEL_NAME = "gemini-1.0-pro"  # Change to "gemini-1.5-pro" for higher quality if needed
 
 def extract_citations(response):
     """
@@ -86,8 +86,30 @@ def run_chatbot():
 
         print(f"✓ Loaded {len(files)} document(s)")
 
-        # Create the model
-        model = genai.GenerativeModel(MODEL_NAME)
+        # Create the model with fallback
+        model_names = ["gemini-1.0-pro", "gemini-pro", "gemini-1.5-flash"]
+        model = None
+        
+        for model_name in model_names:
+            try:
+                model = genai.GenerativeModel(model_name)
+                # Test if model works by trying to get model info
+                _ = model.model_name
+                print(f"✓ Using model: {model_name}")
+                break
+            except Exception:
+                continue
+        
+        if model is None:
+            # List available models
+            try:
+                available_models = genai.list_models()
+                available_names = [m.name for m in available_models if 'generateContent' in m.supported_generation_methods]
+                print(f"❌ No suitable model found. Available models: {', '.join(available_names)}")
+                sys.exit(1)
+            except Exception as list_error:
+                print(f"❌ No suitable model found. List models error: {str(list_error)}")
+                sys.exit(1)
 
         print("🤔 Initializing with documents...")
         # No initialization needed, files will be included in each query
