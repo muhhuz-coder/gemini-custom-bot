@@ -101,7 +101,7 @@ def chat_with_documents(question, files, history):
     """Chat with documents using Gemini"""
     try:
         # Try different model names
-        model_names = ["gemini-1.0-pro", "gemini-pro", "gemini-1.5-flash"]
+        model_names = ["gemini-1.5-flash"]
         model = None
         
         for model_name in model_names:

@@ -26,7 +26,7 @@ API_KEY = "AIzaSyC68Y9pohX1X88ejs2jt_K0522tFSRUXms"  # Replace with your actual 
 STORE_ID = "f9abee98-c29b-4cc2-bf22-aa008d32271d"  # Replace with the Store ID from create_store.py output
 
 # Model settings (Gemini 1.5 Flash for speed/cost, easily switchable to Pro)
-MODEL_NAME = "gemini-1.0-pro"  # Change to "gemini-1.5-pro" for higher quality if needed
+MODEL_NAME = "gemini-1.5-flash"  # Change to "gemini-1.5-pro" for higher quality if needed
 
 def extract_citations(response):
     """
@@ -87,7 +87,7 @@ def run_chatbot():
         print(f"✓ Loaded {len(files)} document(s)")
 
         # Create the model with fallback
-        model_names = ["gemini-1.0-pro", "gemini-pro", "gemini-1.5-flash"]
+        model_names = "gemini-1.5-flash"
         model = None
         
         for model_name in model_names:
