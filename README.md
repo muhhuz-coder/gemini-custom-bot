@@ -2,6 +2,21 @@
 
 A Python-based chatbot that uses Google Gemini AI to answer questions about research papers. Upload PDF documents, create a searchable knowledge base, and interact with an AI assistant that provides accurate answers with citations.
 
+## Quick Start
+
+1. **Clone and run:**
+   ```bash
+   git clone <your-repo-url>
+   cd gemini-research-chatbot
+   ./run.sh
+   ```
+
+2. **Open your browser** to http://localhost:8501
+
+3. **Enter your Google Gemini API key** in the sidebar
+
+4. **Upload PDFs and start chatting!**
+
 ## Features
 
 - 📄 **PDF Upload & Indexing**: Automatically upload and index PDF research papers
@@ -166,14 +181,15 @@ MODEL_NAME = "gemini-pro"  # Current default
 
 ```
 gemini-research-chatbot/
-├── app.py                  # Streamlit web interface (recommended)
-├── create_store.py         # Store creation script (CLI)
-├── chatbot.py              # Interactive chatbot (CLI)
-├── requirements.txt        # Python dependencies
-├── .gitignore             # Git ignore rules
-├── README.md              # This file
-├── papers/                # Your PDF files (create this folder)
-└── .venv/                 # Virtual environment (auto-created)
+├── run.sh                 # Quick start script (Linux/Mac)
+├── app.py                 # Streamlit web interface (recommended)
+├── create_store.py        # Store creation script (CLI)
+├── chatbot.py             # Interactive chatbot (CLI)
+├── requirements.txt       # Python dependencies
+├── .gitignore            # Git ignore rules
+├── README.md             # This file
+├── papers/               # Your PDF files (create this folder)
+└── .venv/                # Virtual environment (auto-created)
 ```
 
 ## Troubleshooting
