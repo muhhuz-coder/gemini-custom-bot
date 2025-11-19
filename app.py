@@ -146,12 +146,12 @@ with st.sidebar:
         help="Get your API key from https://aistudio.google.com/"
     )
 
-    if api_key and api_key != st.session_state.api_key:
+    if api_key != st.session_state.api_key:
         st.session_state.api_key = api_key
-        st.success("✅ API Key configured")
-        st.rerun()
-    elif not st.session_state.api_key:
-        st.warning("⚠️ Please enter your API key")
+        if api_key:
+            st.success("✅ API Key configured")
+        else:
+            st.warning("⚠️ Please enter your API key")
 
     st.divider()
 
